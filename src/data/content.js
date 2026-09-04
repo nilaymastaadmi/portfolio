@@ -229,8 +229,8 @@ export const notices = [
     body: ['Public dates only. Updated when something moves.'],
   },
   {
-    slug: 'what-i-cannot-create', title: 'Pinned quote', date: '2026-09-01', kind: 'quote', station: null, pinned: true, attribution: 'Richard Feynman, on his blackboard, 1988',
-    body: ['What I cannot create, I do not understand.'],
+    slug: 'invent-the-future', title: 'Pinned quote', date: '2026-09-05', kind: 'quote', station: null, pinned: true, attribution: 'Alan Kay, Xerox PARC, 1971',
+    body: ['The best way to predict the future is to invent it.'],
   },
   {
     slug: 'slacksmith-under-construction', title: 'Service notice: SlackSmith station under construction', date: '2026-09-03', kind: 'notice', station: 'slacksmith', pinned: true,
