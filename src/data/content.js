@@ -22,7 +22,7 @@ export const about = [
 
 // Row order matters: two lines can share a station only if their rows are adjacent.
 export const lines = [
-  { id: 'systems', name: 'Systems line', color: 'var(--l-systems)', blurb: 'Software and robotics built for other people.' },
+  { id: 'systems', name: 'Internships line', color: 'var(--l-systems)', blurb: 'Work done inside companies, described and not shown.' },
   { id: 'hardware', name: 'Hardware line', color: 'var(--l-hardware)', blurb: 'Chips, verification, analog.' },
   { id: 'ml', name: 'ML line', color: 'var(--l-ml)', blurb: 'Models measured on data they never saw.' },
   { id: 'markets', name: 'Markets line', color: 'var(--l-markets)', blurb: 'Rules first, gates second, backtests last.' },
@@ -35,8 +35,8 @@ export const stations = [
     bio: 'Found the money for two race cars, then helped make them run.',
     date: '2024-08', period: 'Aug 2024 to Aug 2025', state: 'open',
     why: 'A student racing team builds real vehicles that cost real money, and the bring-up before a competition is where they break. Someone has to find the sponsors, and someone has to find the faults.',
-    how: 'I ran sponsorship: cold outreach, a commercial case for each partner that matched what they wanted to what the build would deliver, and the negotiation to close it. On the engineering side I led subsystem design and hardware integration across two builds, and traced the electrical faults that appeared in the weeks before competition back to failing sensors and power supplies.',
-    howTech: 'Sponsorship pitch and negotiation across two build cycles. Subsystem design and hardware integration; fault isolation on sensor and power-supply failures with a bench supply, DMM and thermal measurements; twelve critical electrical faults resolved during pre-competition bring-up.',
+    how: 'I ran sponsorship: cold outreach, a commercial case for each partner that matched what they wanted to what the build would deliver, and the negotiation to close it. On the engineering side I led subsystem design and hardware integration across two builds, and traced the electrical faults that appeared in the weeks before competition back to failing sensors and power supplies. I also ran the team accounts, and most sponsor conversations started from a post, so the posting and the fundraising were one job.',
+    howTech: 'Sponsorship pitch and negotiation across two build cycles; team Instagram grown from about 600 to past 1,000 followers as the outreach channel. Subsystem design and hardware integration; fault isolation on sensor and power-supply failures with a bench supply, DMM and thermal measurements; twelve critical electrical faults resolved during pre-competition bring-up.',
     result: { value: '₹25L+', label: 'raised across two competitive vehicle builds' },
     outcome: 'The builds were funded, and the cars reached competition with the faults found in the workshop instead of on the track.',
     broke: 'Most cold outreach went nowhere. The pitches that worked were the ones written around what the partner needed, not around what the team needed, and it took a few dead conversations to learn that.',
@@ -147,7 +147,7 @@ export const stations = [
     how: 'I built an agent that turns a plain question into a database query over daily prices for a basket of Indian stocks, computes the metric, and answers. Next to it sits the part I care about: a benchmark that scores it, and a list of every way it failed, by name.',
     howTech: 'Claude Haiku 4.5 as a tool-using agent with three tools (schema, guarded SQL, pandas metrics) over a SQLite store of 28 NSE stocks from Yahoo Finance. 48-question benchmark across six difficulty tiers plus injection probes; four guardrail layers, 25 of 25 attacks stopped with zero false positives. Failure taxonomy with labelled cases; mean cost $0.016 per task.',
     result: { value: '93.8%', label: 'on a 48-question benchmark, every miss classified' },
-    broke: 'Three named failure modes. It picked one meaning of an ambiguous question without saying so. It made up an answer once after a query came back empty. And on questions the data could not answer, it sometimes answered anyway. The benchmark is also small, was run once per configuration, and was written by the same person who wrote the agent, all of which the README says out loud.',
+    broke: 'All three misses landed in the one tier written to catch them: questions the data cannot answer. Twice it picked one reading of an ambiguous question without saying so, and once it made up an answer after a query came back empty. The benchmark is also small, was run once per configuration, and was written by the same person who wrote the agent, all of which the README says out loud.',
     links: [{ label: 'Repo', href: 'https://github.com/nilaymastaadmi/market-query-agent' }],
   },
   {
