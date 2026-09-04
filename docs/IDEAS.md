@@ -5,7 +5,7 @@ order is Nilay's call; nothing here is started.
 
 ## From the visual tour of 2026-09-04 (headless frames in `Projects/portfolio-research-raw/tour/`)
 
-1. **Corridor tunnel** (wodniack.dev). BUILT 2026-09-04: two walls rotated 70 degrees in a 520 px perspective, ruled rails scrubbed one wall-width in opposite directions by ScrollTrigger; static on phones and under reduced motion. Replace the concentric arches in the tunnel with two
+1. **Corridor tunnel** (wodniack.dev). BUILT 2026-09-04, redrawn 2026-09-05: four planes (walls, floor, ceiling) turned a full 90 degrees into a 560 px perspective so every line meets one vanishing point; ruled textures scrubbed toward the viewer by ScrollTrigger; a radial fade hides the far end; hidden under 760 px and static under reduced motion. The first version tilted two walls 70 degrees and looked like stray lines. Replace the concentric arches in the tunnel with two
    ruled walls converging in perspective that stream with scroll, so the planned-extension
    section reads as moving down a hall. Transforms only. Half a day.
 2. **Blur-to-sharp opener** (logartis.info). BUILT 2026-09-04 without SplitText: glyph spans rendered at build time, CSS animation from blur(14px) with a 42 ms stagger; opacity starts at 0.02 so LCP still counts the heading (measured LCP unchanged at 2.0 s). "Welcome aboard." resolves letter by letter on

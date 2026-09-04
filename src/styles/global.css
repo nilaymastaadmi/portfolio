@@ -121,12 +121,18 @@ p { margin: 0; }
 
 /* ---------- tunnel between chapters: a ruled corridor in perspective, walls stream past on scroll ---------- */
 .tunnel { position: relative; padding: var(--section) 0; overflow: hidden; border-top: 1px solid var(--rule); }
-.corridor { position: absolute; inset: 0; perspective: 520px; perspective-origin: 50% 46%; overflow: hidden; }
-.cwall { position: absolute; top: -30%; bottom: -30%; width: 58%; overflow: hidden; backface-visibility: hidden; }
-.cwall.l { left: 0; transform-origin: 0 50%; transform: rotateY(70deg); }
-.cwall.r { right: 0; transform-origin: 100% 50%; transform: rotateY(-70deg); }
-.rails { position: absolute; top: 0; bottom: 0; left: 0; width: 200%; background: repeating-linear-gradient(90deg, oklch(0.5 0.04 215 / 0.75) 0 3px, transparent 3px 8.3333%), repeating-linear-gradient(180deg, transparent 0 24%, oklch(0.5 0.04 215 / 0.45) 24% calc(24% + 2px)); }
-.cwall.r .rails { left: auto; right: 0; }
+.corridor { position: absolute; inset: 0; perspective: 560px; perspective-origin: 50% 50%; overflow: hidden; }
+.cwall { position: absolute; overflow: hidden; backface-visibility: hidden; --rib: oklch(0.5 0.04 215 / 0.42); }
+.cwall.l { left: 0; top: 0; bottom: 0; width: 260%; transform-origin: 0 50%; transform: rotateY(90deg); }
+.cwall.r { right: 0; top: 0; bottom: 0; width: 260%; transform-origin: 100% 50%; transform: rotateY(-90deg); }
+.cwall.f { left: 0; right: 0; bottom: 0; height: 260%; transform-origin: 50% 100%; transform: rotateX(90deg); }
+.cwall.c { left: 0; right: 0; top: 0; height: 260%; transform-origin: 50% 0; transform: rotateX(-90deg); }
+.rails { position: absolute; }
+.cwall.l .rails, .cwall.r .rails { top: 0; bottom: 0; width: 200%; background: repeating-linear-gradient(90deg, var(--rib) 0 2px, transparent 2px 8%), repeating-linear-gradient(180deg, transparent 0 24%, var(--rib) 24% calc(24% + 2px)); }
+.cwall.l .rails { left: 0; } .cwall.r .rails { right: 0; }
+.cwall.f .rails, .cwall.c .rails { left: 0; right: 0; height: 200%; background: repeating-linear-gradient(180deg, var(--rib) 0 2px, transparent 2px 8%), repeating-linear-gradient(90deg, transparent 0 24%, var(--rib) 24% calc(24% + 2px)); }
+.cwall.f .rails { bottom: 0; } .cwall.c .rails { top: 0; }
+.corridor::after { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 30% 42% at 50% 50%, var(--bg) 35%, transparent 100%), linear-gradient(180deg, var(--bg), transparent 16% 84%, var(--bg)); }
 @media (max-width: 760px) { .corridor { display: none; } }
 .ext { position: relative; z-index: 2; }
 .ext h2 { margin-bottom: var(--s-6); }
