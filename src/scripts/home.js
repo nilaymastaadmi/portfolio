@@ -124,7 +124,7 @@ export function init() {
   const tunnel = document.getElementById('tunnel');
   if (tunnel && !reduce && !phone) {
     tunnel.querySelectorAll('.corridor .rails').forEach((r) => {
-      const left = r.closest('.wall').classList.contains('l');
+      const left = r.closest('.cwall').classList.contains('l');
       kills.push(gsap.fromTo(r, { xPercent: left ? 0 : -50 }, { xPercent: left ? -50 : 0, ease: 'none', scrollTrigger: { trigger: tunnel, start: 'top bottom', end: 'bottom top', scrub: 0.4 } }).scrollTrigger);
     });
   }
