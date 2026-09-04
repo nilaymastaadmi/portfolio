@@ -1,0 +1,72 @@
+/* Design tokens. Dark control room; cream paper objects (map, posters, ticket) sit on it. */
+:root {
+  --bg: oklch(0.15 0.02 215);
+  --bg-2: oklch(0.19 0.022 215);
+  --bg-3: oklch(0.23 0.024 215);
+  --ink: oklch(0.93 0.025 85);
+  --muted: oklch(0.74 0.02 85);
+  --rule: oklch(0.31 0.02 215);
+  --coral: oklch(0.72 0.16 30);
+  --coral-deep: oklch(0.62 0.17 30);
+  --coral-ink: oklch(0.48 0.17 30);
+  --lamp: oklch(0.88 0.13 85);
+  --lamp-glow: oklch(0.88 0.13 85 / 0.22);
+
+  /* paper objects */
+  --paper: oklch(0.905 0.03 85);
+  --paper-2: oklch(0.86 0.035 85);
+  --paper-ink: oklch(0.2 0.035 215);
+  --paper-muted: oklch(0.42 0.03 215);
+  --paper-teal: oklch(0.4 0.08 190);
+  --shadow-hard: 14px 14px 0 oklch(0.09 0.02 215);
+  --shadow-hard-sm: 7px 7px 0 oklch(0.09 0.02 215);
+
+  /* lines: colour is information, one job each */
+  --l-systems: oklch(0.64 0.17 50);
+  --l-hardware: oklch(0.5 0.15 250);
+  --l-ml: oklch(0.55 0.15 150);
+  --l-markets: oklch(0.52 0.17 300);
+  --l-community: oklch(0.55 0.18 20);
+  --brand: var(--l-community);
+
+  --serif: 'Instrument Serif', 'Iowan Old Style', Georgia, serif;
+  --font: 'Overpass Variable', 'Overpass', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --mono: 'Overpass Mono Variable', 'Overpass Mono', ui-monospace, 'Cascadia Mono', Menlo, monospace;
+
+  --fs-0: 0.875rem;
+  --fs-1: 1.05rem;
+  --fs-2: 1.3rem;
+  --fs-3: clamp(1.6rem, 1.2rem + 1.6vw, 2.2rem);
+  --fs-4: clamp(2.2rem, 1.4rem + 3.6vw, 4rem);
+  --fs-5: clamp(3.1rem, 1.6rem + 8vw, 7.6rem);
+  --lh-tight: 0.94;
+  --lh-body: 1.55;
+
+  --s-1: 0.25rem; --s-2: 0.5rem; --s-3: 0.75rem; --s-4: 1rem; --s-5: 1.5rem; --s-6: 2rem; --s-7: 3rem; --s-8: 4.5rem;
+  --section: clamp(4rem, 9vw, 8rem);
+  --gutter: clamp(1rem, 4vw, 2.5rem);
+  --wrap: 78rem;
+  --bar-h: 3.6rem;
+
+  --t-1: 160ms; --t-2: 320ms; --t-3: 560ms; --t-4: 900ms;
+  --t-doors-open: 700ms; --t-doors-close: 350ms;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in: cubic-bezier(0.7, 0, 0.84, 0);
+  --ease-inout: cubic-bezier(0.83, 0, 0.17, 1);
+
+  --z-grain: 1; --z-lamp: 2; --z-sign: 6; --z-bar: 20; --z-menu: 25; --z-doors: 40;
+  --radius: 10px;
+  --radius-sm: 6px;
+  color-scheme: dark;
+}
+
+/* the paper scope: anything printed */
+[data-scene='paper'] {
+  --bg: var(--paper);
+  --ink: var(--paper-ink);
+  --muted: var(--paper-muted);
+  --rule: oklch(0.72 0.035 85);
+  --station-fill: var(--paper);
+  color-scheme: light;
+}
+[data-scene='night'] { --station-fill: var(--bg); }

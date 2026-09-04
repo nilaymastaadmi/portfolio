@@ -1,0 +1,88 @@
+---
+import overpassLatin from '@fontsource-variable/overpass/files/overpass-latin-wght-normal.woff2?url';
+import overpassLatinExt from '@fontsource-variable/overpass/files/overpass-latin-ext-wght-normal.woff2?url';
+import serifLatin from '@fontsource/instrument-serif/files/instrument-serif-latin-400-normal.woff2?url';
+import serifItalic from '@fontsource/instrument-serif/files/instrument-serif-latin-400-italic.woff2?url';
+import monoLatin from '@fontsource-variable/overpass-mono/files/overpass-mono-latin-wght-normal.woff2?url';
+import '../styles/global.css';
+import { ClientRouter } from 'astro:transitions';
+import { person } from '../data/content.js';
+
+const { title, description = person.tagline, page = '', og = '/og-default.png' } = Astro.props;
+const fullTitle = title ? `${title} · ${person.name}` : `${person.name} · ${person.line}`;
+const url = new URL(Astro.url.pathname, Astro.site).href;
+const latin = 'U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD';
+const latinExt = 'U+0100-02AF,U+0304,U+0308,U+0329,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF';
+const face = (family, src, opts = '') => `@font-face{font-family:'${family}';font-display:optional;src:url(${src}) format('woff2');${opts}}`;
+const fontCss = [
+  face('Overpass Variable', overpassLatin, `font-weight:300 900;unicode-range:${latin}`),
+  face('Overpass Variable', overpassLatinExt, `font-weight:300 900;unicode-range:${latinExt}`),
+  face('Instrument Serif', serifLatin, `font-weight:400;font-style:normal;unicode-range:${latin}`),
+  face('Instrument Serif', serifItalic, `font-weight:400;font-style:italic;unicode-range:${latin}`),
+  face('Overpass Mono Variable', monoLatin, `font-weight:300 700;unicode-range:${latin}`),
+].join('');
+const favicon = "data:image/svg+xml," + encodeURIComponent("<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='12' fill='none' stroke='#e05a4a' stroke-width='4'/><rect x='2' y='12.5' width='28' height='7' rx='1' fill='#e05a4a'/><text x='16' y='18.6' text-anchor='middle' font-family='Arial,Helvetica,sans-serif' font-weight='700' font-size='7.5' fill='#f2eadb'>N</text></svg>");
+---
+<!doctype html>
+<html lang="en" data-page={page}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#0f1a1e" />
+    <link rel="icon" href={favicon} />
+    <link rel="canonical" href={url} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={url} />
+    <meta property="og:image" content={new URL(og, Astro.site).href} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="preload" as="font" type="font/woff2" href={serifLatin} crossorigin />
+    <link rel="preload" as="font" type="font/woff2" href={serifItalic} crossorigin />
+    <link rel="preload" as="font" type="font/woff2" href={overpassLatin} crossorigin />
+    <style set:html={fontCss}></style>
+    <slot name="head" />
+    <ClientRouter />
+  </head>
+  <body data-scene="night">
+    <header class="bar" transition:name="bar" transition:animate="none">
+      <a class="roundel" href="/" aria-label="Home">
+        <svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="14.5" fill="none" stroke="var(--coral)" stroke-width="4.5" /><rect x="2" y="15.5" width="36" height="9" rx="1.2" fill="var(--coral)" /><text x="20" y="23.4" text-anchor="middle" font-family="var(--font)" font-weight="800" font-size="10.5" fill="var(--bg)">N</text></svg>
+      </a>
+      <a class="name" href="/">{person.name}</a>
+      <nav aria-label="Primary">
+        <a href="/#map" aria-current={page === 'home' ? 'page' : undefined}>Map</a>
+        <a href="/#wall">Bulletins</a>
+        <a href="/about/" aria-current={page === 'about' ? 'page' : undefined}>About</a>
+      </nav>
+      <div class="bar-train" aria-hidden="true"><svg viewBox="-16 -8 48 16"><rect class="body" x="-14" y="-6" width="28" height="12" rx="3.5" /><rect class="win" x="-9" y="-3" width="6" height="4.5" rx="1" /><rect class="win" x="0" y="-3" width="6" height="4.5" rx="1" /><circle class="lamp" cx="13" cy="0" r="1.8" /></svg></div>
+      <a class="pill" href={`mailto:${person.email}`}>Contact</a>
+      <button class="menu-btn" aria-expanded="false" aria-controls="menu" data-menu>Menu</button>
+    </header>
+    <nav class="menu" id="menu" data-open="false" aria-label="Menu">
+      <a href="/#map">Map</a><a href="/#wall">Bulletins</a><a href="/about/">About</a><a href={`mailto:${person.email}`}>Contact</a>
+    </nav>
+    <main id="main">
+      <slot />
+    </main>
+    <dialog class="cv-dialog" id="cv-dialog" aria-label="CV">
+      <div class="cv-bar"><span class="mono">CV · one general version</span><a class="pill ghost" href={person.cv} download>Download</a><button class="pill ghost" data-cv-close>Close</button></div>
+      <iframe title="CV, PDF" data-src={person.cv}></iframe>
+    </dialog>
+    <footer class="site">
+      <div class="wrap foot-row">
+        <a class="roundel small" href="/" aria-label="Home"><svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="14.5" fill="none" stroke="var(--coral)" stroke-width="4.5" /><rect x="2" y="15.5" width="36" height="9" rx="1.2" fill="var(--coral)" /><text x="20" y="23.4" text-anchor="middle" font-family="var(--font)" font-weight="800" font-size="10.5" fill="var(--bg)">N</text></svg></a>
+        <span class="mono">{person.name} · BITS Goa</span>
+        <a href={person.github}>GitHub</a>
+        <a href={person.linkedin}>LinkedIn</a>
+        <button class="toggle" data-toggle="motion" aria-pressed="true">Motion: on</button>
+        <button class="toggle" data-toggle="sound" aria-pressed="false">Sound: off</button>
+      </div>
+    </footer>
+    <script>
+      import '../scripts/app.js';
+    </script>
+  </body>
+</html>

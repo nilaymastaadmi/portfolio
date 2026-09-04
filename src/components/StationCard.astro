@@ -1,0 +1,20 @@
+---
+const { s, lines } = Astro.props;
+const kind = { project: 'Project', work: 'Internship', role: 'Role' }[s.kind] || 'Station';
+const colour = (id) => lines.find((l) => l.id === id)?.color;
+const opens = s.opens ? new Date(s.opens + 'T00:00:00').toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }) : null;
+---
+<a class="card" href={`/station/${s.slug}/`} data-slug={s.slug} data-lines={s.lines.join(' ')} data-state={s.state} data-short={s.short}>
+  {s.state === 'construction' && <span class="tape">Under construction{opens ? `, opens ${opens}` : ''}</span>}
+  <div class="top">
+    <span class="kind">{kind}</span>
+    <span class="dots" aria-hidden="true">{s.lines.map((id) => <i style={`--c:${colour(id)}`}></i>)}</span>
+    {s.award && <span class="award">{s.award}</span>}
+  </div>
+  <h3>{s.title}</h3>
+  <p class="why">{s.why}</p>
+  {s.result
+    ? <div class="res"><b class="num">{s.result.value}</b><span>{s.result.label}</span></div>
+    : <div class="res empty"><b>{s.state === 'construction' ? 'Result: opens with the station' : 'Result: number slot'}</b></div>}
+  <span class="open">Open station →</span>
+</a>

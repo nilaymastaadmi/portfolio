@@ -1,0 +1,38 @@
+---
+import Base from '../../layouts/Base.astro';
+import Lamp from '../../components/Lamp.astro';
+import { notices, stations } from '../../data/content.js';
+const kindLabel = { now: 'Now boarding', timetable: 'Timetable', lost: 'Lost and found', quote: 'Pinned quote', reading: 'On the shelf', notice: 'Service notice', learned: 'Learned', depot: 'Depot' };
+const sorted = [...notices].sort((a, b) => b.date.localeCompare(a.date));
+const stationOf = (slug) => stations.find((s) => s.slug === slug);
+---
+<Base scene="night" page="notices" title="Notices" description="The bulletin wall: now boarding, the timetable, lost and found, the shelf.">
+  <section class="night-section lit" id="wall">
+    <Lamp />
+    <div class="wrap">
+      <div class="section-head">
+        <p class="mono kicker">Bulletin wall</p>
+        <h1>Notes pinned <em>at the depot.</em></h1>
+      </div>
+      {sorted.length ? (
+        <div class="board" data-scene="paper">
+          <span class="plate mono">Depot noticeboard</span>
+        <div class="wall">
+          {sorted.map((n, i) => (
+            <a class={`poster kind-${n.kind}`} data-scene="paper" href={`/notices/${n.slug}/`} style={`--tilt:${[-1.2, 0.8, -0.6, 1.4][i % 4]}deg`}>
+              <span class="mono poster-tag">{kindLabel[n.kind] || n.kind}{n.station ? ` · ${stationOf(n.station)?.short}` : ''} · {n.date}</span>
+              {n.kind === 'quote'
+                ? <blockquote><p>{n.body[0]}</p><footer>{n.attribution}</footer></blockquote>
+                : n.kind === 'timetable'
+                  ? <><h3>{n.title}</h3><ul class="rows">{n.rows.map((r) => <li><span class="mono">{r.when}</span><span>{r.what}</span></li>)}</ul></>
+                  : <><h3>{n.title.replace(/^[^:]+:\s*/, '')}</h3><p>{n.body[0]}</p></>}
+            </a>
+          ))}
+        </div>
+        </div>
+      ) : (
+        <p class="why">The wall is empty. Nothing has broken yet, which is not the same as nothing having been tested.</p>
+      )}
+    </div>
+  </section>
+</Base>

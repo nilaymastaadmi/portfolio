@@ -1,0 +1,128 @@
+---
+import Base from '../layouts/Base.astro';
+import MetroMap from '../components/MetroMap.astro';
+import Lamp from '../components/Lamp.astro';
+import Ticket from '../components/Ticket.astro';
+import { person, lines, stations, notices, future } from '../data/content.js';
+const [first, ...rest] = person.line.split(' ');
+const emphasis = person.lineEmphasis || rest.slice(-2).join(' ');
+const plain = person.line.replace(emphasis, '').trim();
+const wall = notices.filter((n) => n.pinned).sort((a, b) => b.date.localeCompare(a.date)).slice(0, 3);
+const kindLabel = { now: 'Now boarding', timetable: 'Timetable', lost: 'Lost and found', quote: 'Pinned quote', reading: 'On the shelf', notice: 'Service notice', learned: 'Learned', depot: 'Depot' };
+const construction = stations.filter((s) => s.state === 'construction');
+const kindName = { project: 'Project', work: 'Internship', role: 'Role' };
+const signData = Object.fromEntries(stations.map((s) => [s.slug, { title: s.title, bio: s.bio || s.why, kind: kindName[s.kind] || 'Station', lines: s.lines.map((id) => lines.find((l) => l.id === id).name.replace(' line', '')).join(' + '), colors: s.lines.map((id) => lines.find((l) => l.id === id).color), state: s.state }]));
+---
+<Base page="home">
+  <section class="hero" id="top">
+    <div class="wrap">
+      <p class="mono kicker">{person.name} · BITS Goa · a journey in three stops</p>
+      <h1>{plain} <em>{emphasis}</em></h1>
+      <div class="hero-row">
+        <p class="tagline">{person.tagline}</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="map-section" id="map">
+    <div class="wrap">
+      <div class="map-head">
+        <div>
+          <p class="mono kicker">Chapter one · The map</p>
+          <h2>Every station <em>is a thing I built.</em></h2>
+        </div>
+      </div>
+      <div class="lanes" role="group" aria-label="Follow a line">
+        {lines.map((l) => <button class="lane" data-lane={l.id} aria-pressed="false"><i></i>{l.name}</button>)}
+      </div>
+      <div class="map-card" data-scene="paper" id="map-card">
+        <div class="map-grid" aria-hidden="true"></div>
+        <span class="mono corner tl">Network map · {stations.length} stations · <span class="pocket">pocket edition</span></span>
+        <span class="mono corner br">{construction.length} under construction</span>
+        <div class="map-stage" id="map-stage">
+          <MetroMap id="map-main" />
+          <div class="train-html" aria-hidden="true">
+            <svg viewBox="-16 -16 72 32" class="train">
+              <path class="beam" d="M14 0 L52 -13 L52 13 Z" />
+              <rect class="body" x="-14" y="-7" width="28" height="14" rx="4" />
+              <rect class="win" x="-9" y="-3.5" width="6" height="5" rx="1.2" />
+              <rect class="win" x="0" y="-3.5" width="6" height="5" rx="1.2" />
+              <circle class="lamp" cx="13" cy="0" r="2.2" />
+            </svg>
+          </div>
+        </div>
+        <nav class="sr-only" aria-label="All stations">
+          <ul>{stations.map((st) => <li><a href={`/station/${st.slug}/`}>{st.title}</a></li>)}</ul>
+        </nav>
+        <div class="sign" id="sign" role="status" aria-live="polite" hidden>
+          <span class="sign-line"></span>
+          <span class="mono sign-kind"></span>
+          <b class="sign-title"></b>
+          <span class="sign-bio"></span>
+          <span class="mono sign-cta">Click to board →</span>
+        </div>
+      </div>
+      <div class="legend mono">
+        {lines.map((l) => <span style={`--c:${l.color}`}>{l.name.replace(' line', '')}</span>)}
+        <span class="xchg">Interchange</span>
+        <span class="cons">Under construction</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="tunnel" id="tunnel" aria-labelledby="ext-h">
+    <div class="arches" aria-hidden="true">{[0, 1, 2, 3, 4, 5].map((i) => <i class="arch" style={`--i:${i}`}></i>)}</div>
+    <div class="wrap ext">
+      <p class="mono kicker">Planned extension</p>
+      <h2 id="ext-h">Next stops, <em>not yet open.</em></h2>
+      <ol class="ext-rail">
+        {future.map((f) => (
+          <li class="ext-stop">
+            <span class="ext-dot" aria-hidden="true"></span>
+            <span class="mono ext-when">{f.when}</span>
+            <b class="ext-title">{f.title}</b>
+            <span class="ext-note">{f.note}</span>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="night-section" id="wall">
+    <Lamp />
+    <div class="wrap">
+      <div class="section-head">
+        <p class="mono kicker">Chapter two · At the depot</p>
+        <h2>Notes pinned <em>at the depot.</em></h2>
+      </div>
+      <div class="board" data-scene="paper">
+        <span class="plate mono">Depot noticeboard</span>
+      <div class="wall">
+        {wall.map((n, i) => (
+          <a class={`poster kind-${n.kind}`} data-scene="paper" href={`/notices/${n.slug}/`} style={`--tilt:${[-1.4, 0.9, -0.5, 1.6, -1, 0.7][i % 6]}deg`}>
+            <span class="mono poster-tag">{kindLabel[n.kind] || n.kind} · {n.date}</span>
+            {n.kind === 'quote'
+              ? <blockquote><p>{n.body[0]}</p><footer>{n.attribution}</footer></blockquote>
+              : n.kind === 'timetable'
+                ? <><h3>{n.title}</h3><ul class="rows">{n.rows.map((r) => <li><span class="mono">{r.when}</span><span>{r.what}</span></li>)}</ul></>
+                : <><h3>{n.title.replace(/^[^:]+:\s*/, '')}</h3><p>{n.body[0]}</p></>}
+          </a>
+        ))}
+      </div>
+      </div>
+      <p class="more"><a href="/notices/">The whole wall →</a></p>
+    </div>
+  </section>
+
+  <section class="night-section" id="contact">
+    <Lamp />
+    <div class="wrap">
+      <div class="section-head">
+        <p class="mono kicker">Chapter three · Last stop</p>
+        <h2>Get in <em>touch.</em></h2>
+      </div>
+      <Ticket />
+    </div>
+  </section>
+  <script type="application/json" id="station-data" set:html={JSON.stringify(signData)}></script>
+</Base>

@@ -1,0 +1,20 @@
+---
+import Base from '../layouts/Base.astro';
+import Lamp from '../components/Lamp.astro';
+import { person, about } from '../data/content.js';
+---
+<Base scene="night" page="about" title="About" description={about[0]}>
+  <section class="night-section lit" id="driver">
+    <Lamp />
+    <div class="wrap">
+      <div class="section-head">
+        <p class="mono kicker">The driver</p>
+        <h1>{person.name}</h1>
+      </div>
+      <div class="prose">
+        {about.map((p) => <p>{p}</p>)}
+        <p class="links"><a href={person.cv} data-cv>CV</a><a href={`mailto:${person.email}`}>Email</a><a href={person.github}>GitHub</a><a href={person.linkedin}>LinkedIn</a></p>
+      </div>
+    </div>
+  </section>
+</Base>

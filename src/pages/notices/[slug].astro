@@ -1,0 +1,29 @@
+---
+import Base from '../../layouts/Base.astro';
+import { notices, stations, lines } from '../../data/content.js';
+export function getStaticPaths() {
+  return notices.map((n) => ({ params: { slug: n.slug }, props: { n } }));
+}
+const kindLabel = { now: 'Now boarding', timetable: 'Timetable', lost: 'Lost and found', quote: 'Pinned quote', reading: 'On the shelf', notice: 'Service notice', learned: 'Learned', depot: 'Depot' };
+const { n } = Astro.props;
+const st = n.station ? stations.find((s) => s.slug === n.station) : null;
+const lineNames = st ? st.lines.map((id) => lines.find((l) => l.id === id)?.name.replace(' line', '')).join(' and ') : null;
+const idx = notices.findIndex((x) => x.slug === n.slug);
+const prev = notices[idx - 1], next = notices[idx + 1];
+---
+<Base scene="night" page="notices" title={n.title} description={n.body[0]}>
+  <article class="notice wrap">
+    <div class={`poster sheet kind-${n.kind}`} data-scene="paper">
+      <span class="mono poster-tag">{kindLabel[n.kind] || n.kind}{lineNames ? ` · ${lineNames}` : ''} · {n.date}</span>
+      {n.kind === 'quote'
+        ? <blockquote class="big"><p>{n.body[0]}</p><footer>{n.attribution}</footer></blockquote>
+        : <><h1>{n.title.replace(/^[^:]+:\s*/, '')}</h1>{n.rows && <ul class="rows">{n.rows.map((r) => <li><span class="mono">{r.when}</span><span>{r.what}</span></li>)}</ul>}<div class="prose">{n.body.map((p) => <p>{p}</p>)}</div></>}
+      {st && <p class="links"><a href={`/station/${st.slug}/`}>Go to the station: {st.title} →</a></p>}
+    </div>
+    <nav class="exits" aria-label="Other notices">
+      {prev && <a class="pill ghost" href={`/notices/${prev.slug}/`}>← {prev.title.replace(/^[^:]+:\s*/, '')}</a>}
+      {next && <a class="pill ghost" href={`/notices/${next.slug}/`}>{next.title.replace(/^[^:]+:\s*/, '')} →</a>}
+      <a class="pill" href="/notices/">All notices</a>
+    </nav>
+  </article>
+</Base>

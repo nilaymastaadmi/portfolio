@@ -1,0 +1,20 @@
+---
+// A street lamp standing on the section's kerb. Lit when the section is in view; it can light one line of text.
+const { spot = null } = Astro.props;
+---
+<div class="lamp" aria-hidden="true">
+  <svg viewBox="0 0 120 200" class="lamp-svg">
+    <defs>
+      <linearGradient id="cone-g" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="var(--lamp)" stop-opacity="0.34" />
+        <stop offset="1" stop-color="var(--lamp)" stop-opacity="0" />
+      </linearGradient>
+    </defs>
+    <polygon class="cone" points="62,22 4,200 118,200" fill="url(#cone-g)" />
+    <line class="post" x1="30" y1="30" x2="30" y2="200" />
+    <path class="post" d="M30 30 Q30 16 44 16 H60" fill="none" />
+    <path class="hood" d="M50 12 H74 L70 22 H54 Z" />
+    <ellipse class="head" cx="62" cy="23" rx="7" ry="3.2" />
+    <ellipse class="pool" cx="62" cy="199" rx="46" ry="5" />
+  </svg>
+</div>

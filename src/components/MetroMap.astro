@@ -1,0 +1,43 @@
+---
+// Server-rendered map from data. Both orientations are rendered; CSS shows one.
+import { layout, PRESETS } from '../lib/metro.js';
+import { lines, stations } from '../data/content.js';
+const { compact = false, train = false, id = 'map' } = Astro.props;
+const bySlug = Object.fromEntries(stations.map((s) => [s.slug, s]));
+const views = [
+  { cls: 'map-land', L: layout(lines, stations, PRESETS.landscape) },
+  { cls: 'map-port', L: layout(lines, stations, PRESETS.portrait) },
+];
+---
+<div class:list={['map', { compact }]} id={id}>
+  {views.map(({ cls, L }) => (
+    <svg class={cls} viewBox={`0 0 ${L.w} ${L.h}`} role="img" aria-label="Metro map of the work: five lines, projects as stations, two-track projects as interchanges">
+      {L.lines.map((l) => <path class="line-path" data-line={l.id} stroke={l.color} d={l.d} pathLength="1" />)}
+      {L.stations.map((s) => {
+        const st = bySlug[s.slug];
+        return (
+          <a class:list={['station', { xchg: s.interchange }]} href={`/station/${s.slug}/`} data-slug={s.slug} data-lines={s.lines.join(' ')} data-state={s.state} data-x={s.x} data-y={s.y} aria-label={`${st.title}${s.state === 'construction' ? ', under construction' : ''}`}>
+            <title>{st.title}</title>
+            <circle class="outer" cx={s.x} cy={s.y} r={s.interchange ? 9 : 6.5} />
+            {s.interchange && <circle class="inner" cx={s.x} cy={s.y} r="2.6" />}
+          </a>
+        );
+      })}
+      {L.stations.map((s) => (
+        <text class:list={['label', { xchg: s.interchange, construction: s.state === 'construction' }]} x={s.label.x} y={s.label.y} text-anchor={s.label.anchor}>{bySlug[s.slug].short}</text>
+      ))}
+    </svg>
+  ))}
+  {train && (
+    <div class="train-html" aria-hidden="true">
+      <svg viewBox="-16 -16 72 32" class="train">
+        <path class="beam" d="M14 0 L52 -13 L52 13 Z" />
+        <rect class="body" x="-14" y="-7" width="28" height="14" rx="4" />
+        <rect class="win" x="-9" y="-3.5" width="6" height="5" rx="1.2" />
+        <rect class="win" x="0" y="-3.5" width="6" height="5" rx="1.2" />
+        <circle class="lamp" cx="13" cy="0" r="2.2" />
+      </svg>
+    </div>
+  )}
+  <slot />
+</div>

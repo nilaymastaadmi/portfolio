@@ -1,0 +1,26 @@
+---
+// The line diagram above the carriage door: one line, current station lit, prev and next reachable.
+import { strip } from '../lib/metro.js';
+import { lines, stations } from '../data/content.js';
+const { lineId, current, named = false } = Astro.props;
+const line = lines.find((l) => l.id === lineId);
+const S = strip(line, stations, { w: 640, pad: 64 });
+const cur = S.stations.find((s) => s.slug === current);
+---
+<div class="door-strip" style={`--c:${line.color}`} aria-label={`${line.name}: stations in order`}>
+  <span class="strip-name">{line.name}</span>
+  <div class="strip-box">
+  <svg viewBox="0 0 640 72" role="list">
+    <line class="rail" x1="20" y1="44" x2="620" y2="44" />
+    {S.stations.map((s, i) => (
+      <g role="listitem">
+        <a href={`/station/${s.slug}/`} aria-label={s.short} aria-current={s.slug === current ? 'page' : undefined}>
+          <circle class:list={['stop', { now: s.slug === current, x: s.interchange, cons: s.state === 'construction' }]} cx={s.x} cy="44" r={s.interchange ? 8 : 6} />
+          <text class:list={['lbl', { now: s.slug === current }]} x={s.x} y={i % 2 ? 68 : 26} text-anchor="middle">{s.short}</text>
+        </a>
+      </g>
+    ))}
+  </svg>
+  {cur && <span class="here" style={`left:${(cur.x / 640) * 100}%; top:${(44 / 72) * 100}%`} data-named={named ? 'true' : 'false'} aria-hidden="true"></span>}
+  </div>
+</div>

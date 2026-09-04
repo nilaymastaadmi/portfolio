@@ -1,0 +1,21 @@
+---
+import Base from '../layouts/Base.astro';
+import MetroMap from '../components/MetroMap.astro';
+import { lines } from '../data/content.js';
+---
+<Base scene="night" page="404" title="Platform not found" description="This platform does not exist. The map does.">
+  <section class="night-section lit" id="lost">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="mono kicker">404</p>
+        <h1>This platform <em>does not exist.</em></h1>
+        <p class="why">Nothing stops here. The lines that do run are below; every station on them is real.</p>
+      </div>
+      <div class="lanes" role="list">
+        {lines.map((l) => <a class="lane" role="listitem" href="/#stations" style={`--c:${l.color}`}><i></i>{l.name}</a>)}
+      </div>
+      <div style="max-width: 44rem; margin-top: var(--s-6)"><MetroMap id="map-404" compact /></div>
+      <nav class="exits"><a class="pill" href="/">Back to the map</a><a class="pill ghost" href="/notices/">Notices</a></nav>
+    </div>
+  </section>
+</Base>

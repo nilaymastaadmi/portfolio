@@ -1,0 +1,92 @@
+---
+import Base from '../../layouts/Base.astro';
+import DoorStrip from '../../components/DoorStrip.astro';
+import { lines, stations, notices } from '../../data/content.js';
+import { neighbours } from '../../lib/metro.js';
+
+export function getStaticPaths() {
+  return stations.map((s) => ({ params: { slug: s.slug }, props: { s } }));
+}
+const { s } = Astro.props;
+const kind = { project: 'Project', work: 'Internship', role: 'Role' }[s.kind] || 'Station';
+const colour = (id) => lines.find((l) => l.id === id)?.color;
+const lineName = (id) => lines.find((l) => l.id === id)?.name;
+const opens = s.opens ? new Date(s.opens + 'T00:00:00').toLocaleDateString('en-GB', { day: 'numeric', month: 'long' }) : null;
+const when = s.period || new Date(s.date + '-01').toLocaleDateString('en-GB', { month: 'long', year: 'numeric' });
+const exits = s.lines.map((id) => ({ id, name: lineName(id), ...neighbours(lines.find((l) => l.id === id), stations, s.slug) }));
+const own = notices.filter((n) => n.station === s.slug);
+const construction = s.state === 'construction';
+const words = (t) => t.trim().split(/\s+/);
+const outcome = s.outcome || (s.result ? `${s.result.value}, ${s.result.label}.` : construction ? `Nothing to report yet. Trains stop here from ${opens || 'the opening date'}.` : null);
+const broke = s.broke || (construction ? 'Nothing has broken yet, which is not the same as nothing having been tested.' : null);
+---
+<Base scene="night" page="station" title={s.title} description={s.why}>
+  {s.media?.poster && <link slot="head" rel="preload" as="image" href={s.media.poster} fetchpriority="high" />}
+  <div class="doors" data-doors aria-hidden="true"><div class="door l"></div><div class="door r"></div></div>
+  <article class="carriage" data-state={s.state} data-slug={s.slug}>
+    <div class="window" aria-hidden={s.media ? undefined : 'true'}>
+      <div class="lights"></div>
+      {s.media?.video
+        ? <video data-src={s.media.video} poster={s.media.poster} preload="none" muted loop playsinline></video>
+        : s.media?.poster
+          ? <img src={s.media.poster} alt={`${s.title}, screenshot`} fetchpriority="high" />
+          : <div class="slot"><span class="plate-sign">{s.short}</span></div>}
+      {construction && <div class="tape big">Station under construction{opens ? `, opens ${opens}` : ''}</div>}
+    </div>
+
+    {s.lines.map((id, i) => <DoorStrip lineId={id} current={s.slug} named={i === 0} />)}
+    {s.lines.length === 2 && <p class="change">Interchange: change here between the {lineName(s.lines[0]).replace(' line', '')} and {lineName(s.lines[1]).replace(' line', '')} lines.</p>}
+
+    <header class="panel">
+      <div class="top">
+        <span class="kind">{kind}</span>
+        <span class="dots" aria-hidden="true">{s.lines.map((id) => <i style={`--c:${colour(id)}`}></i>)}</span>
+        <span class="when">{when}</span>
+        {s.award && <span class="award">{s.award}</span>}
+      </div>
+      <h1>{s.title}</h1>
+      {s.result
+        ? <div class="res big"><b class="num">{s.result.value}</b><span>{s.result.label}</span></div>
+        : construction && <div class="res big empty"><b>The number arrives with the station.</b></div>}
+    </header>
+
+    <div class="prose">
+      <h2>Why</h2><p>{s.why}</p>
+      {s.howTech && (
+        <div class="tone" data-tone-control>
+          <label class="mono" for="tone">Plain English</label>
+          <input id="tone" type="range" min="0" max="1" step="0.01" value="0" aria-label="How technical should this page read, from plain English to engineer" />
+          <span class="mono">For engineers</span>
+        </div>
+      )}
+      <h2>How</h2>
+      <div class="how" data-how data-tone="plain">
+        <p class="how-plain">{words(s.how).map((w, i) => <><span class="w" style={`--i:${i}`}>{w}</span>{' '}</>)}</p>
+        {s.howTech && <p class="how-tech" aria-hidden="true">{words(s.howTech).map((w, i) => <><span class="w" style={`--i:${i}`}>{w}</span>{' '}</>)}</p>}
+      </div>
+      {outcome && <><h2>What came out</h2><p>{outcome}</p></>}
+      {broke && <><h2>What broke</h2><p>{broke}</p></>}
+      {s.gap && <><h2 id="mind-the-gap">Mind the gap</h2><div class="mind" aria-labelledby="mind-the-gap"><p>{s.gap}</p></div></>}
+      {s.links.length > 0 && <p class="links">{s.links.map((l) => <a href={l.href} rel="noopener">{l.label} ↗</a>)}</p>}
+    </div>
+
+    {own.length > 0 && (
+      <section class="board-here">
+        <h2>Notices at this station</h2>
+        <div class="wall">
+          {own.map((n, i) => <a class="poster" href={`/notices/${n.slug}/`} style={`--tilt:${[-1, 0.8][i % 2]}deg`}><span class="kind">{n.kind} notice</span><h3>{n.title.replace(/^[^:]+:\s*/, '')}</h3><p>{n.body[0]}</p><span class="date">{n.date}</span></a>)}
+        </div>
+      </section>
+    )}
+
+    <nav class="exits" aria-label="Next stations">
+      {exits.map((e) => (
+        <>
+          {e.prev && <a class="pill ghost" href={`/station/${e.prev.slug}/`} data-leave data-key="prev">← {e.prev.short} <small>{e.name}</small></a>}
+          {e.next && <a class="pill ghost" href={`/station/${e.next.slug}/`} data-leave data-key="next">{e.next.short} → <small>{e.name}</small></a>}
+        </>
+      ))}
+      <a class="pill" href="/#stations" data-leave data-key="map">Back to the map</a>
+    </nav>
+  </article>
+</Base>

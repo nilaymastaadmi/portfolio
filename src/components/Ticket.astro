@@ -1,0 +1,25 @@
+---
+import { person } from '../data/content.js';
+const today = new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }).toUpperCase();
+---
+<div class="ticket" data-scene="paper">
+  <div class="ticket-main">
+    <div class="ticket-row mono"><span>Single journey</span><span>Valid any day</span></div>
+    <p class="ticket-to">To</p>
+    <h3 class="ticket-name">{person.name}</h3>
+    <a class="ticket-mail" href={`mailto:${person.email}`}>{person.email}</a>
+    <div class="ticket-fields">
+      <div><span class="mono">From</span><b>You</b></div>
+      <div><span class="mono">Via</span><b>Email, or the links on the stub</b></div>
+      <div><span class="mono">Class</span><b>Any line</b></div>
+      <div><span class="mono">Issued</span><b>{today}</b></div>
+    </div>
+    <span class="stamp" aria-hidden="true">All aboard</span>
+  </div>
+  <div class="ticket-stub">
+    <span class="mono stub-code">N / 2026</span>
+    <a href={person.github}>GitHub ↗</a>
+    <a href={person.linkedin}>LinkedIn ↗</a>
+    <a href={person.cv} data-cv>CV, read it here ↗</a>
+  </div>
+</div>
