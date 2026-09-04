@@ -45,8 +45,14 @@ p { margin: 0; }
 }
 
 /* ---------- hero ---------- */
-.hero { padding: clamp(4rem, 10vw, 8rem) 0 clamp(2rem, 5vw, 4rem); }
+.hero { padding: clamp(4rem, 10vw, 8rem) 0 clamp(2rem, 5vw, 4rem); overflow: clip; }
 .hero h1 { max-width: 14ch; }
+/* opener: each glyph resolves from blur; the emphasis word leaves four echoes behind it like a departing train */
+.opener .g { animation: glyph var(--t-4) var(--ease-out) both; animation-delay: calc(var(--i) * 42ms); }
+@keyframes glyph { from { opacity: 0.02; filter: blur(14px); } to { opacity: 1; filter: blur(0); } }
+.hero h1 em { position: relative; display: inline-block; isolation: isolate; }
+.echo { position: absolute; left: 0; top: 0; pointer-events: none; color: var(--coral); opacity: 0; z-index: -1; animation: echo var(--t-4) var(--ease-out) both; animation-delay: calc(760ms + var(--k) * 70ms); }
+@keyframes echo { to { opacity: calc(0.22 - var(--k) * 0.045); transform: translateX(calc(var(--k) * 0.5em)); } }
 .hero-row { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: var(--s-5); margin-top: var(--s-6); }
 .tagline { font-size: var(--fs-2); max-width: 28rem; color: var(--muted); }
 
@@ -113,10 +119,15 @@ p { margin: 0; }
 .sign .sign-bio { font-size: 0.86rem; color: oklch(0.85 0.02 85); line-height: 1.4; }
 .sign .sign-cta { font-size: 0.62rem; color: var(--coral); margin-top: 0.1rem; }
 
-/* ---------- tunnel between chapters ---------- */
+/* ---------- tunnel between chapters: a ruled corridor in perspective, walls stream past on scroll ---------- */
 .tunnel { position: relative; padding: var(--section) 0; overflow: hidden; border-top: 1px solid var(--rule); }
-.arches { position: absolute; inset: 0; display: grid; place-items: center; }
-.arch { position: absolute; width: 74vmin; height: 74vmin; border: 3px solid var(--rule); border-radius: 50% 50% 10px 10px / 46% 46% 10px 10px; transform: scale(calc(1 - var(--i) * 0.14)); opacity: calc(1 - var(--i) * 0.14); will-change: transform; }
+.corridor { position: absolute; inset: 0; perspective: 520px; perspective-origin: 50% 46%; overflow: hidden; }
+.wall { position: absolute; top: -30%; bottom: -30%; width: 58%; overflow: hidden; backface-visibility: hidden; }
+.wall.l { left: 0; transform-origin: 0 50%; transform: rotateY(70deg); }
+.wall.r { right: 0; transform-origin: 100% 50%; transform: rotateY(-70deg); }
+.rails { position: absolute; top: 0; bottom: 0; left: 0; width: 200%; background: repeating-linear-gradient(90deg, oklch(0.5 0.04 215 / 0.75) 0 3px, transparent 3px 8.3333%), repeating-linear-gradient(180deg, transparent 0 24%, oklch(0.5 0.04 215 / 0.45) 24% calc(24% + 2px)); }
+.wall.r .rails { left: auto; right: 0; }
+@media (max-width: 760px) { .wall { width: 50%; top: -10%; bottom: -10%; } }
 .ext { position: relative; z-index: 2; }
 .ext h2 { margin-bottom: var(--s-6); }
 .ext-rail { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--s-4); position: relative; }
@@ -128,7 +139,6 @@ p { margin: 0; }
 .ext-note { grid-column: 3; color: var(--muted); font-size: var(--fs-0); }
 .ext-cap { margin-top: var(--s-6); color: var(--muted); font-size: var(--fs-0); max-width: 34rem; }
 @media (min-width: 900px) { .ext-rail { grid-template-columns: repeat(3, 1fr); gap: var(--s-6); } .ext-rail::before { left: 0.6rem; right: 0.6rem; top: 0.6rem; bottom: auto; border-left: 0; border-top: 4px dashed var(--rule); } .ext-stop { grid-template-columns: 1fr; padding-top: 2rem; } .ext-dot { position: absolute; top: 0; left: 0; } .ext-note { grid-column: 1; } }
-@media (max-width: 760px) { .arch { width: 120vmin; height: 120vmin; opacity: calc(0.5 - var(--i) * 0.07); } }
 
 
 /* ---------- night sections and lamps ---------- */
@@ -339,3 +349,4 @@ html[data-motion='off'] *, html[data-motion='off'] *::before, html[data-motion='
 
 @media (max-width: 760px) { .board { padding: var(--s-6) var(--s-3) var(--s-4); } .board .plate { top: 1rem; } }
 @media (prefers-reduced-motion: reduce) { .how .w { transition: none; } }
+@media (prefers-reduced-motion: reduce) { .opener .g, .echo { animation: none; } .echo { opacity: calc(0.22 - var(--k) * 0.045); transform: translateX(calc(var(--k) * 0.5em)); } }

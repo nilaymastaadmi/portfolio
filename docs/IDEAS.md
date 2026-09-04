@@ -5,10 +5,10 @@ order is Nilay's call; nothing here is started.
 
 ## From the visual tour of 2026-09-04 (headless frames in `Projects/portfolio-research-raw/tour/`)
 
-1. **Corridor tunnel** (wodniack.dev). Replace the concentric arches in the tunnel with two
+1. **Corridor tunnel** (wodniack.dev). BUILT 2026-09-04: two walls rotated 70 degrees in a 520 px perspective, ruled rails scrubbed one wall-width in opposite directions by ScrollTrigger; static on phones and under reduced motion. Replace the concentric arches in the tunnel with two
    ruled walls converging in perspective that stream with scroll, so the planned-extension
    section reads as moving down a hall. Transforms only. Half a day.
-2. **Blur-to-sharp opener** (logartis.info). "Welcome aboard." resolves letter by letter on
+2. **Blur-to-sharp opener** (logartis.info). BUILT 2026-09-04 without SplitText: glyph spans rendered at build time, CSS animation from blur(14px) with a 42 ms stagger; opacity starts at 0.02 so LCP still counts the heading (measured LCP unchanged at 2.0 s). "Welcome aboard." resolves letter by letter on
    load: each glyph starts blurred and offset, snaps sharp with a stagger. GSAP SplitText
    (free since 2025). Keep it under 12 characters, blur filters cost. Half a day.
 3. **Exploded train on station pages** (animejs.com). A line-drawn train in SVG (40 to 60
@@ -18,7 +18,7 @@ order is Nilay's call; nothing here is started.
 4. **Lens transition** (logartis.info). Leaving the map into the tunnel, a circular lens
    keeps the map visible through it while the tunnel arrives around it (mask on a fixed
    copy, scrubbed). One day.
-5. **Echoed word** (wodniack.dev). Four fading copies of "aboard." trailing off to the right
+5. **Echoed word** (wodniack.dev). BUILT 2026-09-04: four absolutely positioned copies of the emphasis word inside the em (isolation: isolate, z-index -1), 0.5em steps, opacity 0.175 down to 0.04, animated in after the glyphs. Four fading copies of "aboard." trailing off to the right
    like a train leaving. Two hours.
 6. **Tick-strip scrubber** (animejs.com). Replace the Plain-to-Engineer range input with a
    drag strip of ticks and a red marker. Two hours.

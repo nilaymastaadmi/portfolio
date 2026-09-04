@@ -17,7 +17,7 @@ const signData = Object.fromEntries(stations.map((s) => [s.slug, { title: s.titl
   <section class="hero" id="top">
     <div class="wrap">
       <p class="mono kicker">{person.name} · BITS Goa · a journey in three stops</p>
-      <h1>{plain} <em>{emphasis}</em></h1>
+      <h1 class="opener" aria-label={person.line}>{[...plain].map((ch, i) => <span class="g" style={`--i:${i}`}>{ch}</span>)} <em>{[...emphasis].map((ch, i) => <span class="g" style={`--i:${plain.length + 1 + i}`}>{ch}</span>)}{[1, 2, 3, 4].map((k) => <span class="echo" aria-hidden="true" style={`--k:${k}`}>{emphasis}</span>)}</em></h1>
       <div class="hero-row">
         <p class="tagline">{person.tagline}</p>
       </div>
@@ -71,7 +71,7 @@ const signData = Object.fromEntries(stations.map((s) => [s.slug, { title: s.titl
   </section>
 
   <section class="tunnel" id="tunnel" aria-labelledby="ext-h">
-    <div class="arches" aria-hidden="true">{[0, 1, 2, 3, 4, 5].map((i) => <i class="arch" style={`--i:${i}`}></i>)}</div>
+    <div class="corridor" aria-hidden="true"><div class="wall l"><div class="rails"></div></div><div class="wall r"><div class="rails"></div></div></div>
     <div class="wrap ext">
       <p class="mono kicker">Planned extension</p>
       <h2 id="ext-h">Next stops, <em>not yet open.</em></h2>

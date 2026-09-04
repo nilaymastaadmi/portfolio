@@ -1,4 +1,4 @@
-// Home: map entrance, lane focus, station signs, idle train, tunnel arches, card tilt, lamps.
+// Home: map entrance, lane focus, station signs, idle train, corridor tunnel, card tilt, lamps.
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { navigate } from 'astro:transitions/client';
@@ -120,12 +120,12 @@ export function init() {
     kills.push(() => cancelAnimationFrame(raf));
   }
 
-  // 6. tunnel: arches scale past you as the planned extension scrolls through (desktop)
+  // 6. tunnel: the corridor walls stream past as the planned extension scrolls through (desktop)
   const tunnel = document.getElementById('tunnel');
   if (tunnel && !reduce && !phone) {
-    tunnel.querySelectorAll('.arch').forEach((a, i) => {
-      const base = 1 - i * 0.14;
-      kills.push(gsap.fromTo(a, { scale: base * 0.6, opacity: 0.15 }, { scale: base * 2.6, opacity: 1 - i * 0.14, ease: 'none', scrollTrigger: { trigger: tunnel, start: 'top bottom', end: 'bottom top', scrub: 0.4 } }).scrollTrigger);
+    tunnel.querySelectorAll('.corridor .rails').forEach((r) => {
+      const left = r.closest('.wall').classList.contains('l');
+      kills.push(gsap.fromTo(r, { xPercent: left ? 0 : -50 }, { xPercent: left ? -50 : 0, ease: 'none', scrollTrigger: { trigger: tunnel, start: 'top bottom', end: 'bottom top', scrub: 0.4 } }).scrollTrigger);
     });
   }
 
