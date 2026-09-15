@@ -210,6 +210,19 @@ export const stations = [
     gap: 'Built for the Astera Labs Nebula programme at BITS Goa. Private until the presentation on 25 September; the station opens then.',
     links: [],
   },
+  {
+    slug: 'quiet-neurons', title: 'Quiet Neurons', short: 'Quiet Neurons', lines: ['ml'], kind: 'project', labelSide: 'below',
+    bio: 'A brain-like model running in your browser, quiet on what it just learned.',
+    date: '2026-09', state: 'open', award: 'DataForge 2026',
+    why: 'Pathway published a new kind of neural network, the Dragon Hatchling, with a claim about it: fewer of its neurons fire when the next piece of text is easy to guess. DataForge asked teams to explain one idea from that research to someone new to it. I wanted one claim, tested properly, on a real model you can poke yourself, not an animation of one.',
+    how: 'I trained small versions of the model at three sizes on the paper\'s own test task and checked the paper\'s claim first. It held. Then I found a case it does not cover: two stretches of text the model predicts equally well, where one uses far more neurons than the other. The difference is where the knowledge came from. Text memorised during training keeps neurons busy; text picked up a moment ago from the passage in front of it goes quiet. The page runs the real model in your browser, so you can change the word, inject a surprise, and watch the neurons answer.',
+    howTech: 'BDH (arXiv:2509.26507), Pathway\'s architecture unmodified, trained at n = 2,048, 8,192 and 16,384 on the \u00a76.4 synthetic protocol and step-matched at 2,309 steps of one 4,000-step OneCycle schedule. Counted xy_sparse, the paper\'s y. Layer 2 firing on the weight-held warm-up over the context-held repeats: 2.354\u00d7 at n = 2,048; 9.65% against 3.64% at n = 8,192 with both blocks under 0.005 nats of surprise. Moving the word into the weights collapses the gap to 1.035\u00d7, and a dense Transformer trained identically reads 0.83 to 1.02 at every layer. The 397,312-parameter model runs in a web worker from 1.59 MB of weights, checked against PyTorch on a parity page.',
+    result: { value: '2.35\u00d7', label: 'as many neurons firing on memorised text as on text just learned, both predicted almost perfectly' },
+    outcome: 'A live explainer that opens without sign-in, runs the actual model rather than a recording, and teaches a sharper version of the claim than the paper states. An ordinary Transformer trained the same way shows no such effect, so on that comparison it belongs to this architecture rather than to the task.',
+    broke: 'I set out to prove something bigger: that surprise and quietness move together letter by letter. The data refused it, so the claim got narrower. I also said publicly that the effect grows steadily with model size; a second training run showed that two runs of the same size differ by more than the sizes do, so I took that back in the README. An accessibility check I had published was wrong too, and the most important button on the page failed the contrast standard I said it passed; it was fixed and measured again. What the page still cannot tell you is why memorised text needs more neurons.',
+    media: { poster: '/media/quiet-neurons.jpg' },
+    links: [{ label: 'Live demo', href: 'https://nilaymastaadmi.github.io/quiet-neurons/' }, { label: 'Repo', href: 'https://github.com/nilaymastaadmi/quiet-neurons' }],
+  },
 ];
 
 export const notices = [

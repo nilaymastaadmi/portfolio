@@ -20,18 +20,19 @@ for (const orient of ['landscape', 'portrait']) {
   for (const l of L.lines) for (const m of l.d.matchAll(/[ML](-?[\d.]+) (-?[\d.]+)/g)) {
     check(+m[1] >= 0 && +m[1] <= L.w && +m[2] >= 0 && +m[2] <= L.h, `${l.id} path point (${m[1]},${m[2]}) outside ${L.w}x${L.h}`);
   }
-  // label alternation: same-row single-line neighbours alternate sides
+  // label alternation: same-row single-line neighbours in ADJACENT columns alternate sides.
+  // Two columns apart (an interchange between them) there is a full column of clearance, so same-side is fine.
   const byRow = {};
   for (const s of L.stations) (byRow[s.row] ||= []).push(s);
   for (const row of Object.values(byRow)) {
     row.sort((a, b) => a.col - b.col);
-    for (let i = 1; i < row.length; i++) if (!row[i].interchange && !row[i - 1].interchange && orient === 'landscape')
+    for (let i = 1; i < row.length; i++) if (!row[i].interchange && !row[i - 1].interchange && row[i].col - row[i - 1].col === 1 && orient === 'landscape')
       check(Math.sign(row[i].label.y - row[i].y) !== Math.sign(row[i - 1].label.y - row[i - 1].y), `labels on same side: ${row[i - 1].slug}, ${row[i].slug}`);
   }
   if (orient === 'landscape') for (const l of L.lines) console.log(`  ${l.id.padEnd(10)} ${l.stations.join(' > ')}`);
 }
 const st = strip(lines[2], stations);
-check(st.stations.length === 5, `ml strip has ${st.stations.length} stations, expected 5`);
+check(st.stations.length === 6, `ml strip has ${st.stations.length} stations, expected 6`);
 const n = neighbours(lines[2], stations, 'pcb-drishti');
 check(n.prev?.slug === 'market-query-agent' && n.next?.slug === 'document-qa', `pcb neighbours ${n.prev?.slug} / ${n.next?.slug}`);
 console.log(fails ? `${fails} FAILURES` : 'all checks passed');
