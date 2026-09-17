@@ -228,44 +228,28 @@ export const stations = [
 
 export const notices = [
   {
-    slug: 'now-boarding', title: 'Now boarding', date: '2026-09-04', kind: 'now', station: null, pinned: true,
-    body: ['September: SlackSmith for the Astera Labs Nebula programme, presented on the 25th. The RAAM Next Gen Leader deck on the 27th. Placement rounds in between.'],
+    slug: 'now-boarding', title: 'Now boarding', date: '2026-09-17', kind: 'now', station: null, pinned: true,
+    body: ['This board updates when a station opens or something breaks in an interesting way. It is not a status page, so it will not say what is being built until it is built.'],
   },
   {
-    slug: 'timetable', title: 'Timetable', date: '2026-09-03', kind: 'timetable', station: null,
-    rows: [
-      { when: '25 Sep', what: 'SlackSmith presentation, Nebula' },
-      { when: '27 Sep', what: 'RAAM Next Gen Leader deck' },
-      { when: '30 Sep', what: 'Options agent, judging closes' },
-      { when: '04 Oct', what: 'Yuva Yodha scheduler, Schneider' },
-      { when: '10 Oct', what: 'Ken Case-Build finale' },
-    ],
-    body: ['Public dates only. Updated when something moves.'],
+    slug: 'lost-and-found', title: 'Lost and found', date: '2026-09-10', kind: 'lost', station: null, pinned: true,
+    body: ['A few things got started here and stopped quietly. The reason is usually boring: the interesting part turned out smaller than expected, or someone else had already built it better. Not every attempt gets a station.'],
   },
   {
     slug: 'invent-the-future', title: 'Pinned quote', date: '2026-09-05', kind: 'quote', station: null, pinned: true, attribution: 'Alan Kay, Xerox PARC, 1971',
     body: ['The best way to predict the future is to invent it.'],
   },
   {
-    slug: 'slacksmith-proof-and-profit', title: 'Service notice: proof and profit are different questions', date: '2026-09-15', kind: 'notice', station: 'slacksmith', pinned: true,
-    body: [
-      'Hardware and ML lines. SlackSmith is submitted and the code is public. A rewrite can be proven correct and still be worth nothing: on the main benchmark, three proven transforms worth 5.165 ns before layout came to 0.000 after buffering.',
-      'The one rewrite that did survive the physical flow is worth 0.846 ns, and the report says in the same sentence that its proposer had tools and could read earlier results. Presentation on 25 September.',
-    ],
+    slug: 'on-the-shelf', title: 'On the shelf', date: '2026-09-01', kind: 'reading', station: null,
+    body: ['A paper on formal equivalence checking, a textbook on static timing analysis, and old contest problems worked cold, no notes. What is actually on the desk changes weekly. This line does not.'],
   },
   {
-    slug: 'pcb-false-alarms', title: 'Service notice: false alarms on unfamiliar boards', date: '2026-07-20', kind: 'notice', station: 'pcb-drishti',
-    body: [
-      'The first PCB Drishti model raised 41 false alarms on a photo of a bare Arduino, because nothing in its training looked like that board. Showing it what a background looks like brought the count across five probe images from 120 to 4.',
-      'The miss it still makes is kept in the demo on purpose.',
-    ],
+    slug: 'the-format', title: 'Service notice: read a station in order', date: '2026-08-20', kind: 'notice', station: null,
+    body: ['Every station says why it was built, how, what came out, and what broke, in that order. The last part stays even when it is not flattering. That rule applies to all sixteen stations, not only the ones that won something.'],
   },
   {
-    slug: 'options-pricing-gate', title: 'Service notice: the pricing model failed its own gate', date: '2026-09-02', kind: 'notice', station: 'options-agent',
-    body: [
-      'The options agent prices with a model that was required to land within 15% of market. It missed, with a median error near 27%, because a volatility index is not the price of the contract being sold.',
-      'The gate stayed. The model is used to explain, not to decide.',
-    ],
+    slug: 'on-failure', title: 'Service notice: two outcomes, same four headings', date: '2026-08-05', kind: 'notice', station: null,
+    body: ['Most of what is on this map worked eventually. A few things did not, on the first attempt or later. Both kinds get the same treatment: what came out, what broke, and whether it held up.'],
   },
 ];
 
