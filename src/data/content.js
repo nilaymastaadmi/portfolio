@@ -81,6 +81,7 @@ export const stations = [
   },
   {
     slug: 'rv32-soc', title: 'RISC-V SoC with custom accelerators', short: 'RV32 SoC', lines: ['hardware'], kind: 'project',
+    media: { poster: '/media/rv32-cycles.jpg' },
     bio: 'A small processor I designed, with hardware bolted on to make two slow jobs fast.',
     date: '2025-12', period: 'Dec 2025 to present', state: 'open',
     why: 'Some jobs are slow in software on a small chip: searching for a GPS satellite signal, or running a neural network next to a sensor. The point of a system-on-chip is to put a dedicated block next to the processor for exactly those jobs, and to prove the whole thing still works.',
@@ -93,6 +94,7 @@ export const stations = [
   },
   {
     slug: 'axi-cdc', title: 'AXI clock-domain-crossing bridge', short: 'AXI CDC', lines: ['hardware'], kind: 'project',
+    media: { poster: '/media/axi-cdc-bridge.jpg' },
     bio: 'Moved data safely between two clocks, and proved nothing was lost on the way.',
     date: '2026-04', state: 'open',
     why: 'When two parts of a chip run on different clocks, data crossing between them can be corrupted in ways that show up rarely and at random. Those are the bugs that ship. Proving the crossing is safe is the whole job.',
@@ -104,6 +106,7 @@ export const stations = [
   },
   {
     slug: 'sky130-analog', title: 'SKY130 analog blocks', short: 'SKY130', lines: ['hardware'], kind: 'project',
+    media: { poster: '/media/sky130-gain.jpg' },
     bio: 'An amplifier and a regulator sized from measured transistor data, not guesswork.',
     date: '2026-05', state: 'open',
     why: 'Analog design is usually taught as rules of thumb: pick a width, simulate, adjust, repeat. Measuring how the transistors actually behave first, and sizing from that data, replaces the guessing. Then the design has to hold across manufacturing variation and temperature, or it is not a design.',
@@ -129,6 +132,7 @@ export const stations = [
   },
   {
     slug: 'trabsa', title: 'TRABSA: a mental-health statement classifier', short: 'TRABSA', lines: ['ml'], kind: 'project',
+    media: { poster: '/media/trabsa-accuracy.jpg' },
     bio: 'Tested whether a custom deep model actually beats a simple baseline. It did, by seven points.',
     date: '2026-01', period: 'Jan to May 2026', state: 'open',
     why: 'Custom architectures get published without anyone checking whether a plain baseline would have done the same job. I wanted the comparison done properly, on a hard task: sorting tens of thousands of posts into seven mental-health categories.',
@@ -141,6 +145,7 @@ export const stations = [
   },
   {
     slug: 'market-query-agent', title: 'Market query agent', short: 'Market agent', lines: ['markets', 'ml'], kind: 'project',
+    media: { poster: '/media/market-agent-taxonomy.jpg' },
     bio: 'Answers stock questions in plain English by writing its own queries, and keeps score of its misses.',
     date: '2026-04', period: 'Apr to Jul 2026', state: 'open',
     why: 'An analyst should be able to ask a question about a stock without knowing the database. The hard part is not answering; it is knowing how often the answer is wrong, and in which ways.',
