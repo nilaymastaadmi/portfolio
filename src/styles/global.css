@@ -252,8 +252,9 @@ footer.site { padding: var(--s-6) 0; border-top: 1px solid var(--rule); color: v
 .carriage { max-width: 60rem; margin: 0 auto; padding: var(--s-5) var(--gutter) var(--s-8); display: grid; gap: var(--s-5); }
 .window { position: relative; aspect-ratio: 16 / 7; border-radius: 18px; overflow: hidden; background: oklch(0.1 0.015 215); border: 6px solid var(--bg-3); box-shadow: inset 0 0 0 2px oklch(0.3 0.02 215), var(--shadow-hard); }
 .window video, .window img { width: 100%; height: 100%; object-fit: cover; opacity: 0.9; }
-.window .slot { display: grid; place-items: center; height: 100%; }
-.window .plate-sign { font-family: var(--serif); font-size: var(--fs-3); color: var(--ink); background: var(--bg-2); border: 3px solid var(--coral); border-radius: 999px; padding: 0.15em 0.9em; box-shadow: 0 0 0 4px var(--bg), 0 0 0 5px var(--rule); }
+.window .slot { position: relative; display: grid; place-items: center; height: 100%; overflow: hidden; background: radial-gradient(ellipse 65% 75% at 50% 50%, color-mix(in oklch, var(--c) 20%, transparent), transparent 72%); }
+.window .slot-motif { position: absolute; width: 40%; height: auto; color: var(--c); opacity: 0.26; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+.window .plate-sign { position: relative; z-index: 1; font-family: var(--serif); font-size: var(--fs-3); color: var(--ink); background: var(--bg-2); border: 3px solid var(--coral); border-radius: 999px; padding: 0.15em 0.9em; box-shadow: 0 0 0 4px var(--bg), 0 0 0 5px var(--rule); }
 .window .lights { position: absolute; inset: 0; width: 200%; background: repeating-linear-gradient(90deg, transparent 0 220px, oklch(0.88 0.13 85 / 0.10) 220px 236px, transparent 236px 440px); animation: tunnel 2.6s linear infinite; pointer-events: none; }
 @keyframes tunnel { to { transform: translateX(-50%); } }
 .tape { background: var(--lamp); color: oklch(0.2 0.03 60); font-family: var(--mono); font-size: 0.66rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.3rem 0.7rem; border-radius: 3px; }
