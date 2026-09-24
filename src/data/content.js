@@ -244,7 +244,7 @@ export const stations = [
   {
     slug: 'finbench', title: 'Can a RAG system tell when it is about to be wrong', short: 'FinBench', lines: ['markets', 'ml'], kind: 'project',
     bio: 'Tests whether a published uncertainty method actually catches a RAG system lying about a 10-K.',
-    date: '2026-09', state: 'construction',
+    date: '2026-09', state: 'open',
     media: { poster: '/media/finbench-auroc.jpg' },
     why: 'A retrieval system that answers a question about a real company filing sounds exactly as confident when it is right as when it is wrong. A method called semantic entropy was published as a fix for that on general knowledge questions. I wanted to know if it actually works once the questions are financial and the source documents are real 10-Ks and 10-Qs, not trivia, and whether it beats something far cheaper.',
     how: 'I built a small retrieval pipeline over 150 real questions on 84 company filings from a published open benchmark, running a small open model on a laptop CPU, and had it answer every question five times. A completely different model graded each answer right or wrong before any detection method was scored, so the grading could not be shaped to flatter the result. Then I measured whether the disagreement across those five answers separates the right ones from the wrong ones, and lined it up against four simpler, cheaper signals doing the same job.',
@@ -252,13 +252,12 @@ export const stations = [
     result: { value: '0.631', label: 'AUROC for semantic entropy separating right answers from wrong ones' },
     outcome: 'Semantic entropy clears its own pre-registered bar, but only just: the confidence interval bottoms out at 0.512, a hair above a coin flip. It does not beat a far simpler signal, exact-match agreement across the five samples, which scores 0.635, statistically indistinguishable from it. The model reads the correct page in 89 of 150 filings, and 29 of the 46 wrong answers happened with that correct page already sitting in front of it: the dominant failure is misreading a retrieved table, not failing to find it.',
     broke: 'The headline comparison failed: semantic entropy was supposed to beat a cheap lexical shortcut and did not, 0.631 against 0.635, a gap the confidence interval calls noise. Of six numeric predictions written down before any answer was generated, three came in wrong, including the expected gain from trusting only the fifty most-certain answers, which fell far short. The sharper finding: on 15 of the 46 wrong answers, the model gave the identical answer all five times. It was completely consistent while being completely wrong, and a method built on disagreement across samples cannot see that failure by construction, not by bad luck.',
-    gap: 'Private for now. Judged by an LLM and cross-checked against a second model family, but the pre-registered manual audit of the judge\'s own labels has not run yet, so every number above is provisional until it does.',
-    links: [],
+    links: [{ label: 'Repo', href: 'https://github.com/nilaymastaadmi/finbench-se' }],
   },
   {
     slug: 'indic-intent-handoff', title: 'Routing a request in six languages, and knowing when to hand it to a person', short: 'Indic Intent', lines: ['ml'], kind: 'project', labelSide: 'above',
     bio: 'Fine-tunes a small model on five Indian languages, and tests whether it knows what it cannot answer.',
-    date: '2026-09', state: 'construction',
+    date: '2026-09', state: 'open',
     media: { poster: '/media/indic-intent-accuracy.jpg' },
     why: 'A support assistant needs to route a request to the right intent in the customer’s own language, and know when the request is something it was never trained on. I wanted a real number for both, in English and five Indian languages, using a method small enough to fine-tune on a laptop: how much do the other five languages cost when the model only ever saw English, how much of that cost does training on all six recover, and can the model’s own confidence catch the requests it should hand to a person.',
     how: 'I fine-tuned a small multilingual encoder with LoRA, training a fraction of one percent of its parameters, on a public benchmark of voice-assistant commands in English, Hindi, Tamil, Telugu, Kannada and Malayalam. Six intents were held out before any training so the study could test hand-off on real unseen requests, drawn by a seed fixed in advance. Every number came from a single sealed test pass opened once, against predictions written down before any model existed.',
@@ -266,7 +265,7 @@ export const stations = [
     result: { value: '83%', label: 'of the zero-shot accuracy gap to five Indian languages recovered once the model also trains on them' },
     outcome: 'Training on English only costs 15 to 28 points of accuracy on the other five languages; training on all six recovers 83% of that on average, closing Hindi’s 15-point gap to 2.7 and Tamil’s 27.7-point gap to 6.8. Hand-off to a person works in English (0.792 AUROC) but is weaker in the other languages when the model only trained on English (0.611 to 0.702), and a threshold tuned to keep 95% of legitimate English requests keeps only 76% to 85% of legitimate requests in the Indian languages until the model also trains on them.',
     broke: 'The comparison the whole study was framed around, whether fine-tuning beats a frozen model, could not be answered: the frozen baseline failed its own sanity check against a published reference number, so under the rule fixed in advance that entire arm is void, reported but not used. A distance-based hand-off score expected to beat a plain confidence score by three points did not, landing two thousandths of a point ahead of it, statistically nothing. And a plain character n-gram model with no neural network at all matched the fine-tuned model within about a point in every language once it also saw that language in training, so most of the multilingual routing problem was never really about the fine-tuning.',
-    gap: 'Private for now. The results above are final under the pre-registration, not provisional; the repository just has no public link yet.',
+    gap: 'Private. The results above are final under the pre-registration; there is no public repository to link.',
     links: [],
   },
   {
