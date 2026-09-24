@@ -32,7 +32,7 @@ for (const orient of ['landscape', 'portrait']) {
   if (orient === 'landscape') for (const l of L.lines) console.log(`  ${l.id.padEnd(10)} ${l.stations.join(' > ')}`);
 }
 const st = strip(lines[2], stations);
-check(st.stations.length === 9, `ml strip has ${st.stations.length} stations, expected 9`);
+check(st.stations.length === 10, `ml strip has ${st.stations.length} stations, expected 10`);
 const n = neighbours(lines[2], stations, 'pcb-drishti');
 check(n.prev?.slug === 'market-query-agent' && n.next?.slug === 'document-qa', `pcb neighbours ${n.prev?.slug} / ${n.next?.slug}`);
 console.log(fails ? `${fails} FAILURES` : 'all checks passed');
