@@ -4,7 +4,13 @@ import { strip } from '../lib/metro.js';
 import { lines, stations } from '../data/content.js';
 const { lineId, current, named = false } = Astro.props;
 const line = lines.find((l) => l.id === lineId);
-const S = strip(line, stations, { w: 640, pad: 64 });
+// Long lines show the 9 stations around the current one, so labels never overlap; the map shows the whole line.
+const MAX = 9;
+const all = strip(line, stations).stations;
+const ci = Math.max(0, all.findIndex((s) => s.slug === current));
+const from = Math.max(0, Math.min(ci - Math.floor(MAX / 2), all.length - MAX));
+const shown = new Set(all.slice(from, from + MAX).map((s) => s.slug));
+const S = strip(line, stations.filter((s) => shown.has(s.slug)), { w: 640, pad: 64 });
 const cur = S.stations.find((s) => s.slug === current);
 ---
 <div class="door-strip" style={`--c:${line.color}`} aria-label={`${line.name}: stations in order`}>
